@@ -1,0 +1,33 @@
+ALGORITHM:
+
+First Implementation:
+
+1. Initialize the `row`, `col`, and `block` lists, which are used to keep track of numbers used in each row, column, and 3x3 subgrid.
+2. Create an empty list `t` to store the coordinates of empty cells (cells with a value of '.').
+3. Iterate through each cell of the Sudoku board:
+   - If the cell is empty, append its coordinates to the `t` list.
+   - If the cell has a value, update the corresponding entries in the `row`, `col`, and `block` lists to mark that number as used.
+4. Define the recursive function `dfs` that takes an index `k` representing the next empty cell to fill.
+5. Inside the `dfs` function:
+   - Check if `k` is equal to the length of `t`. If it is, that means all cells have been filled, and a solution has been found. Set the `ok` variable to `True` and return.
+   - Get the coordinates `(i, j)` of the next empty cell from the `t` list.
+   - Iterate through numbers from 1 to 9:
+     - Check if the current number `v` is not used in the same row, column, and 3x3 subgrid. If it is not used, mark it as used in the `row`, `col`, and `block` lists, assign it to the current cell, and recursively call `dfs` with the index incremented by 1.
+     - After the recursive call, if `ok` is `True`, that means a solution has been found. Return immediately.
+     - If `ok` is still `False`, backtrack by marking the current number as unused and continue with the next number.
+6. Call the `dfs` function with an initial index of 0 to start the backtracking search for a solution.
+
+Second Implementation:
+
+1. Initialize the `cacheBox`, `cacheRow`, and `cacheCol` lists, which are used to keep track of numbers used in each row, column, and 3x3 subgrid.
+2. Iterate through each cell of the Sudoku board:
+   - If the cell is not empty, update the corresponding entries in the `cacheRow`, `cacheCol`, and `cacheBox` lists to mark that number as used.
+3. Define the recursive function `helper` that takes parameters `board`, `i`, `j`, `cacheRow`, `cacheCol`, and `cacheBox`.
+4. Inside the `helper` function:
+   - Check if the current cell `board[i][j]` is empty ('.').
+     - If it is empty, iterate through numbers from 1 to 9:
+       - Check if the current number `k` satisfies the Sudoku rules for the current cell, row, column, and 3x3 subgrid based on the `cacheRow`, `cacheCol`, and `cacheBox` lists.
+       - If the number is valid, mark it as used in the `cacheRow`, `cacheCol`, and `cacheBox` lists, assign it to the current cell, and recursively call `helper` with updated parameters.
+       - After the recursive call, if a solution is found (i.e., the base case is reached), return `True`.
+       - If no solution is found with the current number, backtrack by marking the current number as unused and continue with the next number.
+     - If the current cell is not empty, check if it is the last cell in the Sudoku grid. If it is, return `True` since a solution has been found.
